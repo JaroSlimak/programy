@@ -1,0 +1,278 @@
+#include<iostream>
+#include<conio.h>
+#include<string>
+using namespace std;
+class tranzakcja//klasa sluzaca do latwiejszego odnoszenia sie do tranzakcji
+{
+	public:
+int numer;//numer tranzakcji
+int produkt1,produkt2;//produkt nr 1 i nr 2 
+int zakupy();//metoda sluzaca do wyswietlania listy dostepnych produktow
+int zakupy2();//ta sama lista, drugi produkt
+	
+};
+//global // zmienne globalne, widoczen w calym programie
+int li=1;
+tranzakcja tab[4],tab2[4];
+int wyb,wyb2;
+int pomocnicza[6];
+string pomocnicza2[6];
+string pomocnicza3[6];
+bool dzialanie = true;
+int li1=0,li2=0,li3=0,li4=0,li5=0,li6=0;
+int cz1=0,cz2=0,cz3=0,cz4=0,cz5=0,cz6=0;
+const int supp=2;
+//####
+
+
+int tranzakcja:: zakupy()
+{
+	cout<<"pierwszy produkt, tranzakcja:"<<li<<endl;
+	cout<<"1-jaja"<<endl;
+	cout<<"2-ziemniaki"<<endl;
+	cout<<"3-piwo"<<endl;
+	cout<<"4-kapusta"<<endl;
+	cin>>wyb;
+	cout<<endl;
+	if(li<=4) 
+	li++;	
+
+	return wyb;
+}
+int tranzakcja:: zakupy2()
+{
+	cout<<"drugi produkt"<<endl;
+	switch(wyb)//po to by nie kupic w jednej tranzakcji dwa razy piwa ;)
+	{
+		case 1:
+			{
+				cout<<"2-ziemniaki"<<endl;
+				cout<<"3-piwo"<<endl;
+				cout<<"4-kapusta"<<endl;
+			}break;
+			case 2:
+				{
+					cout<<"1-jaja"<<endl;
+					cout<<"3-piwo"<<endl;
+					cout<<"4-kapusta"<<endl;
+				}break;
+				case 3:
+					{
+						cout<<"1-jaja"<<endl;
+						cout<<"2-ziemniaki"<<endl;
+						cout<<"4-kapusta"<<endl;
+					}break;
+					case 4:
+						{
+							cout<<"1-jaja"<<endl;
+							cout<<"2-ziemniaki"<<endl;
+							cout<<"3-piwo"<<endl;
+						}break;
+						default:cout<<"error";break;
+	
+
+}
+	cin>>wyb2;
+	//zakupy();
+	return wyb2;
+}
+tranzakcja lista()
+{
+	tranzakcja dos,dos2;
+	tranzakcja tr;
+	tr.produkt1=dos.zakupy();
+	tr.produkt2=dos2.zakupy2();
+	tr.numer=li;
+	
+	return tr;
+}
+
+
+int wyswietl(tranzakcja arg)
+{
+	cout<<arg.numer-1<<" ";
+	switch(arg.produkt1)
+	{
+	case	1:cout<<"jaja ";
+	break;
+	case 2:cout<<"ziemniaki ";
+	break;
+	case 3:cout<<"piwo ";
+	break;
+	case 4:cout<<"kapusta ";
+	break;
+	default:cout<<"zły produkt ";
+	dzialanie=false;
+	}
+	
+	switch(arg.produkt2)
+	{
+	case	1:cout<<" jaja ";
+	break;
+	case 2:cout<<" ziemniaki ";
+	break;
+	case 3:cout<<" piwo ";
+	break;
+	case 4:cout<<" kapusta ";
+	break;
+	default:cout<<" zły produkt ";
+	dzialanie=false;
+	}
+	cout<<endl;
+	return 0;
+}
+
+int powitanie()
+{
+	cout<<"WITAJ W PROGRAMIE KTORY RACZEJ W MNIEJSZYM STOPNIU SYMULUJE ALGORYTM APRIORI"<<endl;
+	cout<<"PONIZEJ ZNAJDOWAC SIE BEDZIE LISTA DOSTEPNYCH PRODUKTOW, W JEDNEJ TRANZAKCJI MUSISZ KUPIC DWA PRODUKTY"<<endl;
+	cout<<"NASTEPNIE PROGRAM POLICZY CZY KOMBINACJE PRODUKTOW SA CZESTE I CZY WARTO SIE TYM ZAINTERESOWAC BY UPRZYMILIC KUPNO KLIENTOM NASZEGO SKLEPU ;D"<<endl<<endl<<endl;
+	return 0;
+	
+}
+
+int por(tranzakcja arg)
+{
+	int spr=0;
+	if(arg.produkt1==1&&arg.produkt2==2||arg.produkt1==2&&arg.produkt2==1)spr=1;
+	if(arg.produkt1==1&&arg.produkt2==3||arg.produkt1==3&&arg.produkt2==1)spr=2;
+	if(arg.produkt1==1&&arg.produkt2==4||arg.produkt1==4&&arg.produkt2==1)spr=3;
+	if(arg.produkt1==2&&arg.produkt2==3||arg.produkt1==3&&arg.produkt2==2)spr=4;
+	if(arg.produkt1==2&&arg.produkt2==4||arg.produkt1==4&&arg.produkt2==2)spr=5;
+	if(arg.produkt1==3&&arg.produkt2==4||arg.produkt1==4&&arg.produkt2==3)spr=6;
+	
+	return spr;
+}
+
+int obliczenia()
+{
+	
+	for(int i=0;i<=3;i++)
+	{
+		if(por(tab[i])==1)
+		{
+		li1++;
+	
+		}
+		if(por(tab[i])==2)
+		{
+			li2++;
+	
+		}
+		if(por(tab[i])==3)
+		{
+		li3++;
+
+	    }
+		if(por(tab[i])==4)
+		{
+		li4++;
+
+		}
+		if(por(tab[i])==5)
+		{
+		li5++;
+
+		}
+		if(por(tab[i])==6)
+		{
+		li6++;
+		}
+	}
+
+	//sprawdzam czy czesto razem wystepuja   //supp to minimalna powtazalnosc tych samych kombinacji tranzakcji;
+		if(li1>=supp)cz1++;
+		if(li2>=supp)cz2++;
+		if(li3>=supp)cz3++;
+		if(li4>=supp)cz4++;
+		if(li5>=supp)cz5++;
+		if(li6>=supp)cz6++;
+	
+	//procenty z tych "czestych"
+	if(cz1>0)
+	{
+		pomocnicza[0]=(li1*100)/4;
+		pomocnicza2[0]="jaja,ziemniaki";
+	}else{
+		pomocnicza[0]=0;
+		pomocnicza3[0]="jaja,ziemniaki";
+	}
+	
+	 	if(cz2>0)
+	{
+		pomocnicza[1]=(li2*100)/4;
+		pomocnicza2[1]="jaja,piwo";
+	}else{
+		pomocnicza[1]=0;
+		pomocnicza3[1]="jaja,piwo";
+	}
+	
+		if(cz3>0)
+	{
+		pomocnicza[2]=(li3*100)/4;
+		pomocnicza2[2]="jaja,kapusta";
+	}else{
+		pomocnicza[2]=0;
+		pomocnicza3[2]="jaja,kapusta";
+	}
+	
+		if(cz4>0)
+	{
+		pomocnicza[3]=(li4*100)/4;
+		pomocnicza2[3]="ziemniaki,piwo";
+	}else{
+		pomocnicza[3]=0;
+		pomocnicza3[3]="ziemniaki,piwo";
+	}
+		if(cz5>0)
+	{
+		pomocnicza[4]=(li5*100)/4;
+		pomocnicza2[4]="ziemniaki,kapusta";
+	}else{
+		pomocnicza[4]=0;
+		pomocnicza3[4]="ziemniaki,kapusta";
+	}
+		if(cz6>0)
+	{
+		pomocnicza[5]=(li6*100)/4;
+		pomocnicza2[5]="piwo,kapusta";
+	}else{
+		pomocnicza[5]=0;
+		pomocnicza3[5]="piwo,kapusta";
+	}	 
+	return 0;
+}
+int wysw_obl()
+{
+	for(int i=0;i<=5;i++)
+	{
+		if(pomocnicza[i]!=0)
+		{
+			cout<<endl<<" kombinacja  "<<pomocnicza2[i]<<" "<<pomocnicza[i]<<"%"<<" czesta "<<endl;
+		}else{
+			cout<<"kombinacja "<<" nieczesta "<<endl;
+		}	
+	}
+}
+int main()
+{
+		powitanie();
+	for(int i =0;i<=3;i++)
+	{
+		tab[i]=lista();//zapelnianie tablicy tranzakcjami 
+	
+	}
+
+	for(int i=0;i<=3;i++)
+	{
+		wyswietl(tab[i]);//wyswietlanie tranzakcji
+	}
+	obliczenia();
+	wysw_obl();
+	cout<<"Jeszcze raz ? (1/0)";
+	int odp;
+	cin>>odp;
+	if(odp==1)main();
+
+	return 0;
+}
